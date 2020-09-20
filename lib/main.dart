@@ -1,86 +1,129 @@
 import 'dart:developer';
-//import 'dart:html';
-
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
-
-int _selectedIndex = 0;
-const TextStyle optionStyle =
-    TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
+void main()
+{
+  runApp(App());
 }
 
-class _MyAppState extends State<MyApp> {
+class App extends StatelessWidget
+{
   @override
   Widget build(BuildContext context) {
-    List<Widget> _widgetOptions = <Widget>[
-      Text(
-        'Index 0: Home',
-        style: optionStyle,
-      ),
-      Text(
-        'Index 1: Business',
-        style: optionStyle,
-      ),
-      ButtonBar(children: <Widget>[
-        Center(
-          child: FlatButton(
-              child: Text('Ok'),
-              color: Colors.blue,
-              onPressed: () => {
-                    setState(() {
-                      _selectedIndex = 0;
-                    })
-                  }),
-        ),
-      ]),
-    ];
-    void _onItemTapped(int index) {
-      log("tapped");
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
 
     return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Welcome to Flutter'),
-        ),
-        body: Center(
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Home'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.business),
-              title: Text('Business'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              title: Text('School'),
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          onTap: _onItemTapped,
-        ),
+
+        title: 'My Flutter App',
+
+        home: Home()
+
+    );
+  }
+}
+
+class Home extends StatefulWidget
+{
+  @override
+  State<StatefulWidget> createState()
+  {
+    return _HomeState();
+  }
+}
+
+const TextStyle optionStyle  = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+List<Widget> noteList = [];
+
+// final myController = TextEditingController();
+
+
+buildRow()
+{
+    noteList.add(new TextField(
+      autofocus: true,
+    ));
+}
+
+class _HomeState extends State<Home>
+{
+  int _currentIndex = 0;
+
+  // List<Widget> _children = <Widget>
+  // [
+  //   Text(
+  //     'Index 0: Home',
+  //     style: optionStyle,
+  //   ),
+  //   Text(
+  //     'Index 1: Business',
+  //     style: optionStyle,
+  //   ),
+  //   Text(
+  //     'Index 2: School',
+  //     style: optionStyle,
+  //   ),
+  // ];
+
+  onTabTapped()
+  {
+    setState(()
+    {
+      log("onTabTapped");
+      buildRow();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context)
+  {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Flutter App'),
+      ),
+
+      body: Column(
+
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+         children:
+         [
+           Column(children: noteList),
+
+           // Container(
+           //     // alignment: Alignment.center,
+           //     // height: 50,
+           //     child: new Column(children: noteList),
+           //
+           //     // child : TextField(
+           //     //
+           //     //   autofocus: true,
+           //     //   // controller: myController,
+           //     //
+           //     //  )
+           //     // child : Text('My Flutter App')
+           // ),
+
+            /*Bottom Options bar*/
+            Container(
+
+                alignment: Alignment.bottomLeft,
+                child: new ButtonBar(
+                  mainAxisSize: MainAxisSize.min, // this will take space as minimum as posible(to center)
+                  children: <Widget>
+                  [
+                    new RaisedButton(
+
+                      child: new Text('Next'),
+                      onPressed: onTabTapped(),
+
+                    ),
+                  ],
+                ),
+
+              ),
+         ],
+
       ),
     );
   }
-
-  // @override
-  // State<StatefulWidget> createState() {
-
-  //   throw UnimplementedError();
-  // }
 }
